@@ -33,7 +33,7 @@ module.exports.register = async (req, res) => {
 
     }
     catch(error){
-        api.error(res, error.message, "error in registering user", 500);
+       console.log(error)
     }
 }
 module.exports.login = async (req, res) => {

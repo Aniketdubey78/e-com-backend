@@ -7,6 +7,6 @@ const createproductschema = joi.object({
     imgUrl:joi.string().uri().required()
 
 })
-const createproductsArraySchema = joi.array().items(createproductschema);
 
-module.exports = createproductsArraySchema;
+
+module.exports = createproductschema;

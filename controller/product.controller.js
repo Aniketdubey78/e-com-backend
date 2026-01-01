@@ -20,6 +20,7 @@ module.exports.getproducts = async(req,res)=>{
 }
 module.exports.createproducts = async(req,res)=>{
     try{
+        console.log(req.body)
     const products = await Product.create(req.body);
     api.success(res,products);
     }catch(error){
