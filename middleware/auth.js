@@ -7,9 +7,9 @@ module.exports.isAuthenticated = (req, res, next) => {
         if (!token) {
             return api.error(res, "no token provided", "Unauthorized access", 401);
         }
-        console.log(token)
+       
         const user = jwt.verify(token, process.env.JWT_SECRET);
-         console.log(user)
+         
         if (!user) {
             return api.error(res, "invalid token", "unauthorised access", 401);
         }
@@ -27,7 +27,7 @@ module.exports.isSeller = (req, res, next) => {
         if (!req.user) {
             return api.error(res, "unauthenticated", "unauthorised access", 401);
         }
-        console.log(req.user.role)
+        
         if (req.user.role !== "seller") {
             return api.error(res, "forbidden", "this action is allowed for sellers only", 403);
         }

@@ -3,6 +3,6 @@ const controller = require("../controller/wishlist.controller");
 const { isAuthenticated } = require("../middleware/auth");
 
 router.get("/", isAuthenticated, controller.getWishlist);
-router.post("/:id", isAuthenticated, controller.addOrRemove);
+router.post("/", isAuthenticated, controller.addOrRemove);
 
 module.exports = router;
