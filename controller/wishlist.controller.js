@@ -14,7 +14,7 @@ module.exports.addOrRemove = async (req, res) => {
       user.wishlist.splice(index, 1);
     }
     await user.save();
-    api.success(res, null);
+    api.success(res, user);
   } catch (error) {
     api.error(res, error.message);
   }
