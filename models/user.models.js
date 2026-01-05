@@ -26,11 +26,11 @@ const userschema = new mongoose.Schema({
   }],
  cart: [
   {
-    productId: {
+    
       type: mongoose.Types.ObjectId,
       ref: "productmodel"
       
-    }
+    
   }
 ]
 
