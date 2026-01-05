@@ -21,7 +21,7 @@ const productschma =new mongoose.Schema({
   },
   sellerId: {
     type: mongoose.Types.ObjectId,
-    ref: "User"
+    ref: "usermodel"
   }
 })
 const productmodel =mongoose.model("productmodel",productschma);

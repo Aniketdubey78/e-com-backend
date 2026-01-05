@@ -4,6 +4,6 @@ const { isAuthenticated } = require("../middleware/auth");
 
 Router.get("/",isAuthenticated,controller.gatCart);
 
-Router.post("/:id",isAuthenticated,controller.addOrRemoveInCart);
+Router.post("/",isAuthenticated,controller.addOrRemoveInCart);
 
 module.exports = Router;

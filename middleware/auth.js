@@ -4,11 +4,15 @@ const api = require("../utils/api");
 module.exports.isAuthenticated = (req, res, next) => {
     try {
         const token = req.headers?.authorization?.split(" ")[1];
+       console.log(token);
+       
         if (!token) {
             return api.error(res, "no token provided", "Unauthorized access", 401);
         }
        
         const user = jwt.verify(token, process.env.JWT_SECRET);
+        console.log(user);
+        
          
         if (!user) {
             return api.error(res, "invalid token", "unauthorised access", 401);
@@ -16,7 +20,7 @@ module.exports.isAuthenticated = (req, res, next) => {
 
         req.user = user;
         next();
-       
+         
     } catch (error) {
         return api.error(res, error.message, "unauthorised access", 401);
     }

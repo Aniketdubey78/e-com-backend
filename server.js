@@ -15,6 +15,7 @@ app.get("/healthcheck", (req, res) => {
 })
 
 app.use(cors());
+
 app.use(express.json());
 
 const route = require("./routes/route");

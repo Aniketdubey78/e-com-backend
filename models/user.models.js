@@ -22,20 +22,17 @@ const userschema = new mongoose.Schema({
   },
   wishlist: [{
     type: mongoose.Types.ObjectId,
-    ref: "Product"
+    ref: "productmodel"
   }],
-  cart: [
-    {
-      product: {
-        type: mongoose.Types.ObjectId,
-        ref: "Product"
-      },
-      quantity: {
-        type: Number,
-        default: 1
-      }
+ cart: [
+  {
+    productId: {
+      type: mongoose.Types.ObjectId,
+      ref: "productmodel"
+      
     }
-  ]
+  }
+]
 
   // createdAt: timestamp
   // updatedAt: timestamp
