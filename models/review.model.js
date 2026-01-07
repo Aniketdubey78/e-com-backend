@@ -10,11 +10,11 @@ const reviewSchema = mongoose.Schema({
   },
   productId: {
     type: mongoose.Types.ObjectId,
-    ref: "Product"
+    ref: "productmodel"
   },
   userId: {
     type: mongoose.Types.ObjectId,
-    ref: "User"
+    ref: "usermodel"
   }
 })
 

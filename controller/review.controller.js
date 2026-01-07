@@ -1,62 +1,91 @@
-const  review = require("../models/review.model")
-const api =require("../utils/api");
+const Review = require("../models/review.model");
+const api = require("../utils/api");
 
-module.exports.createReviews = async(req,res) =>{
-    try {
-        const productId =req.params.productId
-        const userId =req.user.Id
+module.exports.createReviews = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const userId = req.user.id;
+    const { comment, rating } = req.body;
 
-        const {comment , rating} = req.body
+    const review = await Review.create({
+      comment,
+      rating,
+      productId,
+      userId,
+    });
 
-        const review = await review.create({comment ,rating,productId,userId});
-        return api.success(res,review,"review created successfully",201);
-    } catch (error) {
-        return api.error(res,error.message,"unable to create reviews",500);
+    // Populate user name after creation
+    const populatedReview = await Review.findById(review._id).populate(
+      "userId",
+      "name"
+    );
+
+    return api.success(
+      res,
+      populatedReview,
+      "review created successfully",
+      201
+    );
+  } catch (error) {
+    return api.error(res, error.message, "unable to create reviews", 500);
+  }
+};
+
+module.exports.updateReviews = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+    const { comment, rating } = req.body;
+
+    const review = await Review.findOne({ productId });
+
+    if (!review) {
+      return api.error(res, "not found", "review not found", 404);
     }
-}
 
-module.exports.updateReviews = async (req,res) =>{
-    try {
-        const productId = req.params.productId
-        
+    if (rating) review.rating = rating;
+    if (comment) review.comment = comment;
 
-        const {comment,rating} =req.body;
-        const reviews  = await review.findOne(productId);
+    await review.save();
 
-        if(!reviews){
-            return api.error(res,"not found","review not found",404);
-        }
+    // Populate user name after update
+    const populatedReview = await Review.findById(review._id).populate(
+      "userId",
+      "name"
+    );
 
-        if(rating) reviews.rating =rating;
-        if(comment) reviews.comment =comment;
+    return api.success(
+      res,
+      populatedReview,
+      "review updated successfully",
+      200
+    );
+  } catch (error) {
+    return api.error(res, error.message, "unable to update review", 500);
+  }
+};
 
-        return api.success(res,reviews,"review update succesfully",200);
-       
-    } catch (error) {
-        return api.error(res,error.message,"unable to update review" ,500);
+module.exports.DeleteReview = async (req, res) => {
+  try {
+    const productId = req.params.productId;
+
+    const review = await Review.findOneAndDelete({ productId });
+
+    if (!review) {
+      return api.error(res, "not found", "review not found", 404);
     }
-}
 
+    return api.success(res, review, "review deleted successfully", 200);
+  } catch (error) {
+    return api.error(res, error.message, "unable to delete review", 500);
+  }
+};
 
-module.exports.DeleteReview = async (req,res) =>{
-    try {
-        const productId = req.params.productId
-        
-        const reviews  = await review.findOneAndDelete(productId);
-
-        if(!reviews){
-            return api.error(res,"not found","review not found",404);
-        }
-
-        return api.success(res,reviews,"review deleted successfully",200);
-       
-    } catch (error) {
-        return api.error(res,error.message,"unable to delete review" ,500);
-    }
-}
 module.exports.getAllReviews = async (req, res) => {
   try {
-    const reviews = await review.find();
+    const productId = req.params.productId;
+
+    const reviews = await Review.find({ productId }).populate("userId", "name");
+
     return api.success(res, reviews, "reviews fetched", 200);
   } catch (error) {
     return api.error(res, error.message, "unable to fetch reviews", 500);
