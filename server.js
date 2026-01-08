@@ -14,14 +14,17 @@ app.get("/healthcheck", (req, res) => {
   })
 })
 
-app.use(cors());
+app.use(cors({
+  origin: [
+    "http://localhost:5173",
+    "https://stylebuzzz.netlify.app/"
+  ],
+  credentials: true
+}));
 
 app.use(express.json());
 
 const route = require("./routes/route");
 app.use("/api",route);
 
-app.listen(port, () => {
-  console.log("Server is running on port", port);
-
-})
+module.exports = app;
